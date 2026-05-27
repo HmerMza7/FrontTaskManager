@@ -26,7 +26,11 @@ function App() {
             Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
           </p>
         </div>
-        <button type="button" className="counter" onClick={handleClick}>
+        <button
+          type="button"
+          className="text-3xl font-bold"
+          onClick={handleClick}
+        >
           Count is {count}
         </button>
       </section>
