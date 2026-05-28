@@ -1,15 +1,22 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema, type LoginSchema } from "../validations/auth.schema";
 import useAuthForm from "../hooks/useAuth";
 
 const Login = () => {
   const { handleLogin, loading, error } = useAuthForm();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
 
-  const onSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    handleLogin(username, password);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const onSubmit = (data: LoginSchema) => {
+    handleLogin(data.username, data.password);
   };
 
   return (
@@ -18,33 +25,41 @@ const Login = () => {
 
       {error && <p className="text-red-500 text-sm">{error}</p>}
 
-      <form onSubmit={onSubmit} className="flex flex-col gap-3">
-        <input
-          type="text"
-          placeholder="Usuario"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="border rounded px-3 py-2 text-sm"
-          required
-        />
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="border rounded px-3 py-2 text-sm"
-          required
-        />
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
+        <div className="flex flex-col gap-1">
+          <input
+            {...register("username")}
+            type="text"
+            placeholder="Usuario"
+            className="border rounded-lg px-3 py-2 text-sm"
+          />
+          {errors.username && (
+            <p className="text-red-500 text-xs">{errors.username.message}</p>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <input
+            {...register("password")}
+            type="password"
+            placeholder="Contraseña"
+            className="border rounded-lg px-3 py-2 text-sm"
+          />
+          {errors.password && (
+            <p className="text-red-500 text-xs">{errors.password.message}</p>
+          )}
+        </div>
+
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-600 text-white rounded px-4 py-2 text-sm disabled:opacity-50"
+          className="bg-blue-600 text-white rounded-lg px-4 py-2 text-sm disabled:opacity-50"
         >
           {loading ? "Cargando..." : "Entrar"}
         </button>
       </form>
 
-      <p className="text-sm text-center">
+      <p className="text-sm">
         ¿No tienes cuenta?{" "}
         <Link to="/register" className="text-blue-600 underline">
           Regístrate

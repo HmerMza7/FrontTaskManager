@@ -1,5 +1,16 @@
-import { useState, useEffect } from "react";
-import type { TaskFormProps } from "../types";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { taskSchema, type TaskSchema } from "../validations/task.schema";
+import type { Task, Priority } from "../types";
+
+interface TaskFormProps {
+  priorities: Priority[];
+  onSubmit: (payload: TaskSchema) => void;
+  onCancel: () => void;
+  initialData?: Task | null;
+  loading?: boolean;
+}
 
 const TaskForm = ({
   priorities,
@@ -8,22 +19,27 @@ const TaskForm = ({
   initialData,
   loading,
 }: TaskFormProps) => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [priorityId, setPriorityId] = useState<number>(1);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<TaskSchema>({
+    resolver: zodResolver(taskSchema),
+    defaultValues: {
+      priority_id: 1,
+    },
+  });
 
   useEffect(() => {
     if (initialData) {
-      setTitle(initialData.title);
-      setDescription(initialData.description);
-      setPriorityId(initialData.priority_id);
+      reset({
+        title: initialData.title,
+        description: initialData.description,
+        priority_id: initialData.priority_id,
+      });
     }
-  }, [initialData]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit({ title, description, priority_id: priorityId });
-  };
+  }, [initialData, reset]);
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
@@ -32,33 +48,49 @@ const TaskForm = ({
           {initialData ? "Editar tarea" : "Nueva tarea"}
         </h2>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="Título"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="border rounded-lg px-3 py-2 text-sm"
-            required
-          />
-          <textarea
-            placeholder="Descripción"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="border rounded-lg px-3 py-2 text-sm resize-none h-24"
-            required
-          />
-          <select
-            value={priorityId}
-            onChange={(e) => setPriorityId(Number(e.target.value))}
-            className="border rounded-lg px-3 py-2 text-sm"
-          >
-            {priorities.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.level}
-              </option>
-            ))}
-          </select>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
+          <div className="flex flex-col gap-1">
+            <input
+              {...register("title")}
+              type="text"
+              placeholder="Título"
+              className="border rounded-lg px-3 py-2 text-sm"
+            />
+            {errors.title && (
+              <p className="text-red-500 text-xs">{errors.title.message}</p>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <textarea
+              {...register("description")}
+              placeholder="Descripción"
+              className="border rounded-lg px-3 py-2 text-sm resize-none h-24"
+            />
+            {errors.description && (
+              <p className="text-red-500 text-xs">
+                {errors.description.message}
+              </p>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <select
+              {...register("priority_id", { valueAsNumber: true })}
+              className="border rounded-lg px-3 py-2 text-sm"
+            >
+              {priorities.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.level}
+                </option>
+              ))}
+            </select>
+            {errors.priority_id && (
+              <p className="text-red-500 text-xs">
+                {errors.priority_id.message}
+              </p>
+            )}
+          </div>
 
           <div className="flex gap-3 mt-2">
             <button
