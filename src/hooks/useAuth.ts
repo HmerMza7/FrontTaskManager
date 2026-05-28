@@ -5,6 +5,7 @@ import {
 } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const useAuthForm = () => {
   const { login } = useAuth();
@@ -19,8 +20,12 @@ const useAuthForm = () => {
       const { access_token } = await loginService({ username, password });
       login(access_token);
       navigate("/dashboard");
-    } catch {
-      setError("Usuario o contraseña incorrectos");
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.data?.detail) {
+        setError(err.response.data.detail);
+      } else {
+        setError("Usuario o contraseña incorrectos");
+      }
     } finally {
       setLoading(false);
     }
@@ -41,8 +46,12 @@ const useAuthForm = () => {
       });
       login(access_token);
       navigate("/dashboard");
-    } catch {
-      setError("Error al registrar el usuario");
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.data?.detail) {
+        setError(err.response.data.detail);
+      } else {
+        setError("Error al registrar el usuario");
+      }
     } finally {
       setLoading(false);
     }
