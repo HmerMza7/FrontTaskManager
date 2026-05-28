@@ -5,6 +5,7 @@ import TaskForm from "../components/TaskForm";
 import useTasks from "../hooks/useTasks";
 import type { Task, TaskPayload } from "../types";
 import TaskFiltersComponent from "../components/TaskFilters";
+import Pagination from "../components/Pagination";
 
 const Dashboard = () => {
   const {
@@ -18,6 +19,7 @@ const Dashboard = () => {
     remove,
     filters,
     changeFilters,
+    changePage,
   } = useTasks();
   const [showForm, setShowForm] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
@@ -121,6 +123,12 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+        <Pagination
+          page={filters.page ?? 1}
+          pages={tasks?.pages ?? 1}
+          total={tasks?.total ?? 0}
+          onPageChange={changePage}
+        />
       </main>
 
       {showForm && (

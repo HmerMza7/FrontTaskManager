@@ -91,3 +91,10 @@ export interface TaskFiltersProps {
   filters: TaskFilters;
   onChange: (filters: TaskFilters) => void;
 }
+
+export interface PaginationProps {
+  page: number;
+  pages: number;
+  total: number;
+  onPageChange: (page: number) => void;
+}
