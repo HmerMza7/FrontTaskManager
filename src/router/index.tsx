@@ -3,6 +3,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Dashboard from "../pages/Dashboard";
 import AuthLayout from "../components/layouts/AuthLayout";
+import PrivateRoute from "../components/PrivateRoute";
 
 const Router = () => {
   return (
@@ -12,7 +13,9 @@ const Router = () => {
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Route>
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
