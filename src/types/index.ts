@@ -67,3 +67,20 @@ export interface RegisterPayload {
   name: string;
   password: string;
 }
+
+export interface TaskFormProps {
+  priorities: Priority[];
+  onSubmit: (payload: TaskPayload) => void;
+  onCancel: () => void;
+  initialData?: Task | null;
+  loading?: boolean;
+}
+
+export interface TaskCardProps {
+  task: Task;
+  priorities: Priority[];
+  states: StateTask[];
+  onEdit: (task: Task) => void;
+  onDelete: (id: number) => void;
+  onToggleState: (task: Task) => void;
+}
