@@ -5,6 +5,7 @@ import {
 } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import axios from "axios";
 
 const useAuthForm = () => {
@@ -19,6 +20,7 @@ const useAuthForm = () => {
     try {
       const { access_token } = await loginService({ username, password });
       login(access_token);
+      toast.success("Bienvenido");
       navigate("/dashboard");
     } catch (err) {
       if (axios.isAxiosError(err) && err.response?.data?.detail) {
@@ -45,6 +47,7 @@ const useAuthForm = () => {
         password,
       });
       login(access_token);
+      toast.success("Cuenta creada exitosamente");
       navigate("/dashboard");
     } catch (err) {
       if (axios.isAxiosError(err) && err.response?.data?.detail) {

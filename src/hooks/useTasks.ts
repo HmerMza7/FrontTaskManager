@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-
+import {
+  getTasks,
+  createTask,
+  updateTask,
+  deleteTask,
+  getPriorities,
+  getStates,
+} from "../api/task";
 import type {
   PaginatedTasks,
   TaskFilters,
@@ -7,14 +14,7 @@ import type {
   Priority,
   StateTask,
 } from "../types";
-import {
-  createTask,
-  deleteTask,
-  getPriorities,
-  getStates,
-  getTasks,
-  updateTask,
-} from "../api/task";
+import { toast } from "sonner";
 
 const useTasks = () => {
   const [tasks, setTasks] = useState<PaginatedTasks | null>(null);
@@ -52,18 +52,33 @@ const useTasks = () => {
   };
 
   const create = async (payload: TaskPayload) => {
-    await createTask(payload);
-    await fetchTasks();
+    try {
+      await createTask(payload);
+      await fetchTasks();
+      toast.success("Tarea creada exitosamente");
+    } catch {
+      toast.error("Error al crear la tarea");
+    }
   };
 
   const update = async (id: number, payload: Partial<TaskPayload>) => {
-    await updateTask(id, payload);
-    await fetchTasks();
+    try {
+      await updateTask(id, payload);
+      await fetchTasks();
+      toast.success("Tarea actualizada");
+    } catch {
+      toast.error("Error al actualizar la tarea");
+    }
   };
 
   const remove = async (id: number) => {
-    await deleteTask(id);
-    await fetchTasks();
+    try {
+      await deleteTask(id);
+      await fetchTasks();
+      toast.success("Tarea eliminada");
+    } catch {
+      toast.error("Error al eliminar la tarea");
+    }
   };
 
   const changeFilters = (newFilters: TaskFilters) => {
