@@ -1,6 +1,10 @@
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const AuthLayout = () => {
+  const { isAuthenticated } = useAuth();
+
+  if (isAuthenticated) return <Navigate to="/dashboard" replace />;
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white rounded-2xl shadow-md w-full max-w-sm p-8">
