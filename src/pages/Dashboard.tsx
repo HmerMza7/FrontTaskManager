@@ -4,10 +4,21 @@ import TaskCard from "../components/TaskCard";
 import TaskForm from "../components/TaskForm";
 import useTasks from "../hooks/useTasks";
 import type { Task, TaskPayload } from "../types";
+import TaskFiltersComponent from "../components/TaskFilters";
 
 const Dashboard = () => {
-  const { tasks, priorities, states, loading, error, create, update, remove } =
-    useTasks();
+  const {
+    tasks,
+    priorities,
+    states,
+    loading,
+    error,
+    create,
+    update,
+    remove,
+    filters,
+    changeFilters,
+  } = useTasks();
   const [showForm, setShowForm] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [formLoading, setFormLoading] = useState(false);
@@ -53,6 +64,12 @@ const Dashboard = () => {
         {loading && (
           <p className="text-gray-500 text-sm mb-4">Cargando tareas...</p>
         )}
+        <TaskFiltersComponent
+          priorities={priorities}
+          states={states}
+          filters={filters}
+          onChange={changeFilters}
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>

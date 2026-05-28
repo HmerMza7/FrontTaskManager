@@ -84,3 +84,10 @@ export interface TaskCardProps {
   onDelete: (id: number) => void;
   onToggleState: (task: Task) => void;
 }
+
+export interface TaskFiltersProps {
+  priorities: Priority[];
+  states: StateTask[];
+  filters: TaskFilters;
+  onChange: (filters: TaskFilters) => void;
+}
