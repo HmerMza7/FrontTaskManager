@@ -43,3 +43,27 @@ export interface AuthContextType {
   logout: () => void;
   isAuthenticated: boolean;
 }
+export interface TaskFilters {
+  page?: number;
+  limit?: number;
+  state_id?: number;
+  priority_id?: number;
+}
+
+export interface TaskPayload {
+  title: string;
+  description: string;
+  priority_id: number;
+  state_id?: number;
+}
+
+export interface LoginPayload {
+  username: string;
+  password: string;
+}
+
+export interface RegisterPayload {
+  username: string;
+  name: string;
+  password: string;
+}
