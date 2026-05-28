@@ -88,7 +88,7 @@ const Register = () => {
         </button>
       </form>
 
-      <p className="text-sm">
+      <p className="text-sm text-center">
         ¿Ya tienes cuenta?{" "}
         <Link to="/" className="text-blue-600 underline">
           Inicia sesión
