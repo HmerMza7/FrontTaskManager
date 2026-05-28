@@ -46,14 +46,10 @@ pnpm install
 
 ### 3. Configurar variables de entorno
 
-```bash
-cp .env.example .env
-```
-
 El archivo `.env` debe contener:
 
 ```env
-VITE_API_URL=http://127.0.0.1:8000
+VITE_API_URL=http://127.0.0.1:8000  o la direccion de donde corre el backend
 ```
 
 ### 4. Correr el servidor de desarrollo
