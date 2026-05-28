@@ -1,16 +1,15 @@
+import { toast } from "sonner";
 import type { TaskCardProps } from "../types";
 
 const TaskCard = ({
   task,
   priorities,
-  states,
   onEdit,
   onDelete,
   onToggleState,
 }: TaskCardProps) => {
   const isCompleted = task.state_id === 2;
   const priority = priorities.find((p) => p.id === task.priority_id);
-  const state = states.find((s) => s.id === task.state_id);
 
   const priorityColors: Record<string, string> = {
     alta: "bg-red-100 text-red-700",
@@ -61,7 +60,18 @@ const TaskCard = ({
           Editar
         </button>
         <button
-          onClick={() => onDelete(task.id)}
+          onClick={() => {
+            toast("¿Eliminar esta tarea?", {
+              action: {
+                label: "Eliminar",
+                onClick: () => onDelete(task.id),
+              },
+              cancel: {
+                label: "Cancelar",
+                onClick: () => {},
+              },
+            });
+          }}
           className="text-xs px-3 py-1 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition"
         >
           Eliminar
