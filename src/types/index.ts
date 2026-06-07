@@ -98,11 +98,3 @@ export interface PaginationProps {
   total: number;
   onPageChange: (page: number) => void;
 }
-
-interface TaskFormProps {
-  priorities: Priority[];
-  onSubmit: (payload: TaskSchema) => void;
-  onCancel: () => void;
-  initialData?: Task | null;
-  loading?: boolean;
-}
