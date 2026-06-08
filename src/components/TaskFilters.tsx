@@ -9,6 +9,7 @@ const TaskFiltersComponent = ({
   return (
     <div className="flex flex-wrap gap-3 mb-6">
       <select
+        aria-label="Seleccionar estado"
         value={filters.state_id ?? ""}
         onChange={(e) =>
           onChange({
@@ -26,6 +27,7 @@ const TaskFiltersComponent = ({
       </select>
 
       <select
+        aria-label="Seleccionar prioridad"
         value={filters.priority_id ?? ""}
         onChange={(e) =>
           onChange({
